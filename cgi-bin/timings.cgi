@@ -12,8 +12,6 @@ use Template;
 use lib qw(.);
 use lib "/home/www/html/csegdb/lib";
 use config;
-#use session;
-#use user;
 use lib "/home/www/html/timing/lib";
 use timing;
 

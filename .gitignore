@@ -1,2 +1,5 @@
 # Ignore emacs backup files
 *~
+
+# don't store timing_files in the repo
+timing_files/*

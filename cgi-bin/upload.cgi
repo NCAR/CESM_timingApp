@@ -77,9 +77,10 @@ my $dbh = DBI->connect($dsn, $dbuser, $dbpasswd) or die "unable to connect to db
 #
 # get the logged in user info loaded into the item hash
 #
-
-my $user_id = $session->param('loginuser');
-$item{user_id} = $user_id;
+$item{luser_id} = $session->param('user_id');
+$item{llastname} = $session->param('lastname');
+$item{lfirstname} = $session->param('firstname');
+$item{lemail} = $session->param('email');
 
 if ($loggedin == 1) { 
     &doactions(\$req);
@@ -229,12 +230,10 @@ sub uploadProcess
     my $qrundate    = $dbh->quote($item{rundate});
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
 
-    my $quser_id    = $dbh->quote($item{user_id});
-
     my $sql = qq(INSERT INTO t_timeMaster (machine, resolution, compset, total_pes, cost, 
                        throughput, file_date, cesm_tag, comments, user_id, timing_file) 
                 VALUES ($qmachine, $qresolution, $qcompset, $item{total_pes}, 
-                        $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, $quser_id, $timing_file););
+                        $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, $item{luser_id}, $timing_file););
     my $sth = $dbh->prepare($sql);
     $sth->execute();
     $sth->finish;
@@ -426,7 +425,6 @@ sub successPage
 {
     print header;
     print "<META HTTP-EQUIV=\"Refresh\" content =\"0; url=timings.cgi?a=s\">\n";
-    print "XXXXX $item{user_id} XXXXX";
     exit 0;
 }
 

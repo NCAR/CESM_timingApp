@@ -14,7 +14,7 @@ use lib "/home/www/html/csegdb/lib";
 use config;
 
 @ISA = qw(Exporter);
-@EXPORT = qw(getTimings);
+@EXPORT = qw(getTimings getUserName);
 
 sub getTimings
 {
@@ -37,7 +37,7 @@ sub getTimings
        $timing{'file_date'} = $ref->{'file_date'};
        $timing{'cesm_tag'} = $ref->{'cesm_tag'};
        $timing{'comments'} = $ref->{'comments'};
-       $timing{'user_id'} = $ref->{'user_id'};
+       ($timing{'firstname'}, $timing{'lastname'}) = &getUserName($dbh, $ref->{'user_id'});
        $timing{'timing_file'} = $ref->{'timing_file'};
 
        # get the component timing data
@@ -62,4 +62,24 @@ sub getTimings
        push(@timings, \%timing);
    }
    return @timings;
+}
+
+sub getUserName
+{
+   my $dbh = shift;
+   my $user_id = shift;
+
+   my $sql = qq(SELECT count(user_id), firstname, lastname from t_svnusers 
+                WHERE user_id = $user_id);
+   my $sth = $dbh->prepare($sql);
+   $sth->execute();
+   my ($count, $firstname, $lastname) = $sth->fetchrow();
+   $sth->finish();
+
+   if ($count) {
+       return $firstname, $lastname;
+   }
+   else {
+       return ('Unknown','');
+   }
 }

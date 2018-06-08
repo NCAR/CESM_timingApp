@@ -15,7 +15,7 @@ CREATE TABLE `t_timeMaster` (
   `file_date` DATETIME DEFAULT NULL,
   `cesm_tag` varchar(30) DEFAULT NULL,
   `comments` varchar(256) DEFAULT NULL,
-  `user_id` varchar(30) DEFAULT NULL,
+  `user_id` integer DEFAULT NULL,
   `timing_file` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
