@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CESM2 | Timing Data</title>
+	<link rel="shortcut icon" href="http://www.cesm.ucar.edu/styles/modern/img/favicon.png">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+
+
+    [% USE SSI %]
+    <!-- css -->
+    [% SSI.include('virtual','/styles/modern/css/css-include.html') %]
+    [% SSI.include('virtual','/styles/modern/js/js-include.html') %]
+
+    <!-- Theme skin -->
+    <link href="/styles/modern/skins/default.css" rel="stylesheet" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+	     <script src="/styles/modern/js/html5shiv.js"></script>
+	<![endif]-->
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css" />
+
+	<style>
+		#details { 
+			background-color: #c5edcb; 
+		}
+
+		.alert:hover {
+			cursor: pointer;
+		}
+
+		table {
+			width: 100%;
+		}
+
+		.dtr-details {
+			width: 100%;
+		}
+
+		table.dataTable tbody.tbody-timing td {
+			padding: 0px;
+		}
+	</style>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+
+    <script>
+      $(document).ready( function () {
+      	$(".alert").on('click', function() {
+      		$(this).fadeOut('fast');
+      	})
+
+
+        var table = $('#timingTable').DataTable( {
+            "responsive": true,
+            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+            "order": [ [ 3, 'desc'], [ 0, 'asc'] ]
+        } );
+
+        // Handle click on "Expand All" button
+        $('button#btn-show-all-children').on('click', function(){
+            // Expand row details
+            table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+
+        // Handle click on "Collapse All" button
+        $('button#btn-hide-all-children').on('click', function(){
+            // Collapse row details
+            table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+        });
+      } );
+    </script>
+</head>
+
+<body>
+<div id="wrapper">
+	<header>
+		<div class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<!-- navbar header -->
+				[% SSI.include('virtual','/styles/modern/includes/header/navbar-header.html') %]
+				<!-- end navbar header -->
+
+				<!-- search -->
+				[% SSI.include('virtual','/styles/modern/includes/header/search-ssl.html') %]
+				<!-- end search -->
+
+				<!-- nsf -->
+				[% SSI.include('virtual','/styles/modern/includes/header/nsf-header.html') %]
+				<!-- end nsf -->
+
+				<!-- main navigation -->
+				[% SSI.include('virtual','/styles/modern/includes/navigation/models-nav.html') %]
+				<!-- end main navigation -->
+			</div>
+		</div>
+	</header>
+	<!-- end header -->
+
+	<section id="inner-headline">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ul class="breadcrumb">
+						<li><a href="http://www.cesm.ucar.edu/"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/">CESM Models</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/current.html">CESM Supported Releases</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/cesm2/timing">CESM2</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/cesm2/">Timing &amp; Performance</a><i class="icon-angle-right"></i></li>
+                        <li class="active"><a>Data</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="content">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					[% IF msg %]
+                    <div class="alert alert-success center" style="margin:0px; clear: both;">File upload success, see results below</div>
+                    [% END %]
+
+					<div class="post-image">
+						<div class="post-heading">
+							<h1>CESM2 Timing, Performance and Load Balancing Data</h1>
+						</div>
+					</div>
+
+					<ul class="post-border-bottom">
+						<li>This information is constantly subject to change due to changes in the model or machine hardware and software.</li>
+						<li>Clicking on the compset name takes you to the raw timing output file.</li>
+						<li>The timing table results correspond to tag names in the raw timing file that may not be officially released. The timing information is valid but the tag should not necessarily be used for scientific simulations. Please refer to the <a href="http://www.cesm.ucar.edu">CESM website</a> for a complete list of supported CESM versions.</li>
+						<li>Please contribute to this timing table using this <a href="/timing">form</a></li>
+						<li>Please post questions regarding optimal PE layout for supported machines to the <a href="http://bb.cgd.ucar.edu">DiscussCESM Forums</a>.</li>
+					</ul>
+
+					<div style="text-align: center;" id="timingTable_buttons">
+						<button id="btn-show-all-children" class="btn btn-primary" type="button">Expand All</button>
+						<button id="btn-hide-all-children" class="btn btn-primary" type="button">Collapse All</button>
+					</div>
+
+					<table id="timingTable" class="display nowrap">
+						<thead>
+							<tr>
+								<th>Machine</th>
+								<th>Resolution</th>
+								<th>Compset</th>
+								<th>Total PEs</th>
+								<th>Cost pe-hrs/yr</th>
+								<th>ThruPut yrs/day</th>
+								<th>File Date</th>
+								<th class="none">CESM Tag:</th>
+								<th class="none">Comments:</th>
+								<th class="none">PE Layouts</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<!-- dynamically generated output should go here -->
+							[% FOREACH timing IN timings %] 
+							<tr>
+								<td>[% timing.machine %]</td>
+								<td><a href="[% timing.timing_file %]"> [% timing.compset %] </a> </td>
+								<td>[% timing.resolution %]</td>
+								<td>[% timing.total_pes %]</td>
+								<td>[% timing.cost %]</td>
+								<td>[% timing.throughput %]</td>
+								<td>[% timing.file_date %]</td>
+								<td>[% timing.cesm_tag %]</td>
+								<td>[% timing.comments %]</td>
+								<td>
+									<table>
+										<thead>
+											<tr id="details">
+												<th>Component Name</th>
+												<th>Total PEs</th>
+												<th>Root PE</th>
+												<th>Tasks x Threads</th>
+											</tr>
+										</thead>
+										<tbody class="tbody-timing">
+											<!-- Don't forget that the IN needs to capatalized!! -->
+											[% FOREACH name IN timing.compTimes.keys.sort %]
+											<tr class="tr-timing">
+												<td><strong>[% timing.compTimes.$name.name %]</strong></td>
+												<td>[% timing.compTimes.$name.comp_pes %]</td>
+												<td>[% timing.compTimes.$name.root_pes %]</td>
+												<td>[% timing.compTimes.$name.tasks_threads %]</td>
+											</tr>
+											[% END %]
+										</tbody>
+									</table>
+								</td>
+							</tr>
+							[% END %]
+						</tbody>
+
+						<tfoot>
+							<tr>
+								<th>Machine</th>
+								<th>Compset</th>
+								<th>Resolution</th>
+								<th>Total PEs</th>
+								<th>Cost pe-hrs/yr</th>
+								<th>ThruPut yrs/day</th>
+								<th>File Date</th>
+								<th class="none">CESM Tag:</th>
+								<th class="none">Comments:</th>
+								<th class="none">PE Layouts</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div> 
+			</div>
+		</div>
+	</section>
+
+	<footer>
+		<!-- footer -->
+		[% SSI.include('virtual','/styles/modern/includes/footer/footer-inc.html') %]
+		<!-- end footer -->
+	</footer>
+</div>
+<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/styles/cesm.css"/>
+<link rel="SHORTCUT ICON"
+      href="http://www.cgd.ucar.edu/Images/atmos/favicon.png">
+<title>CESM2 Timing Upload Login page</title>
+</head>
+<body>
+
+<div class="loginform">
+<br>
+<h1>CESM2 Timing Upload Login</h1>
+<form method="post" action="/timing/cgi-bin/login.cgi">
+	<div align="center">	
+	<table border=0>
+	<tr>
+	<td><span class="loginlabel">Login type:</span</td>
+	<td><input type="radio" name="loginType" value="SVN" checked> SVN</input>&nbsp;&nbsp;
+	    <input type="radio" name="loginType" value="UCAS"> UCAS</input></td>
+	</tr>
+	<tr>
+	<td><span class="loginlabel">Username:</span></td>
+	<td><input type="text" name="username" value=""></input></td>
+	</tr>
+	<tr>
+	<td><span class="loginlabel">Password:</span></td>
+	<td><input type="password" name="password" value=""></input></td>
+	</tr>
+	</table>
+	<br>
+	<input class="btn"type="submit" name="submit" value="Log In"/>
+	    <input type="hidden" name="action" value="login"/>
+	<br><br>
+	<a href="https://csegweb.cgd.ucar.edu/svnuser/cgi-bin/repo_access_form.cgi">Need a CESM SVN developers login?</a> 
+	<br> 
+	<a href="javascript:alert('Please contact CGD/IS at 303-497-1378\n - or -\n http://www.cgd.ucar.edu/systems/')">Forgot your SVN login or password?</a>
+	<br>
+	<br>
+</form>
+[% IF error %]
+<div class="loginerror">
+[% error %]
+</div>
+<br/>
+[% END %]
+</div>
+</body>
+</html>

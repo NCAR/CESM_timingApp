@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CESM2 | Timing Upload</title>
+  <link rel="shortcut icon" href="http://www.cesm.ucar.edu/styles/modern/img/favicon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+
+  <!-- css -->
+  <!--#include virtual="/styles/modern/css/css-include.html" -->
+  [% INSERT '/home/www/html/styles/modern/css/css-include.html' %]
+
+  <!-- Theme skin -->
+  <link href="/styles/modern/skins/default.css" rel="stylesheet" />
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="/styles/modern/js/html5shiv.js"></script>
+  <![endif]-->
+
+  <style>
+    .callout-block {
+    padding: 30px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    position: relative;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    }
+    .callout-block a {
+    color: rgba(0, 0, 0, 0.55) !important;
+    }
+    .callout-block a:hover {
+    color: rgba(0, 0, 0, 0.65) !important;
+    }
+    .callout-block .icon-holder {
+    font-size: 30px;
+    position: absolute;
+    left: 30px;
+    top: 40px;
+    color: rgba(0, 0, 0, 0.25);
+    }
+    .callout-block .content {
+    margin-left: 60px;
+    }
+    .callout-block .content p:last-child {
+    margin-bottom: 0;
+    }
+    .callout-block .callout-title {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: rgba(0, 0, 0, 0.65);
+    }
+    .callout-info {
+    background: #58bbee;
+    color: #fff;
+    }
+    .callout-success {
+    background: #75c181;
+    color: #fff;
+    }
+    .callout-warning {
+    background: #F88C30;
+    color: #fff;
+    }
+    .callout-danger {
+    background: #f77b6b;
+    color: #fff;
+    }
+
+    /*form styles*/
+    .form-verify {
+      text-align: center;
+      position: relative;
+      margin-top: 30px;
+    }
+
+    .form-verify h5, .form-verify h5 label {
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .form-verify fieldset {
+      background: white;
+      border: 0 none;
+      border-radius: 4px;
+      padding: 20px 30px;
+      box-sizing: border-box;
+      width: 80%;
+      margin: 0 10%;
+      -webkit-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+      -moz-box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 6px 0px rgba(0, 0, 0, 0.4);
+
+      /*box-shadow: 0 8px 6px -6px  #979797;*/
+
+      /*stacking fieldsets above each other*/
+      position: relative;
+    }
+
+    /*Hide all except first fieldset*/
+    .form-verify fieldset:not(:first-of-type) {
+
+    }
+
+    /*inputs*/
+    .form-verify input, .form-verify textarea, .form-verify select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      /*
+      border-radius: 4px;
+      margin-bottom: 10px;
+      */
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-verify select {
+      padding: 11.5px;
+    }
+
+    .form-verify input:focus, .form-verify textarea:focus {
+      -moz-box-shadow: none !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      border: 1px solid #3173ba;
+      outline-width: 0;
+      transition: All 0.5s ease-in;
+      -webkit-transition: All 0.5s ease-in;
+      -moz-transition: All 0.5s ease-in;
+      -o-transition: All 0.5s ease-in;
+    }
+
+    /*buttons*/
+    .form-verify .action-button {
+      width: 100px;
+      background: #3173ba;
+      font-weight: bold;
+      color: white;
+      border: 0 none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 10px 5px;
+      margin: 20px 5px 5px 10px;
+    }
+
+    .form-verify .action-button-delete {
+      width: 100px;
+      background: #b30000;
+      font-weight: bold;
+      color: white;
+      border: 0 none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 10px 5px;
+      margin: 10px 5px;
+    }
+
+    .form-verify .action-button:hover, .form-verify .action-button:focus {
+      box-shadow: 0 0 0 2px white, 0 0 0 3px #3173ba;
+    }
+
+    .form-verify .action-button-previous {
+      width: 100px;
+      background: #73a5da;
+      font-weight: bold;
+      color: white;
+      border: 0 none;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 10px 5px;
+      margin: 10px 5px;
+    }
+
+    .form-verify .action-button-previous:hover, .form-verify .action-button-previous:focus {
+      box-shadow: 0 0 0 2px white, 0 0 0 3px #C5C5F1;
+    }
+
+    .form-group {
+      margin-bottom: 5px;
+    }
+
+    .form-group span.form-span {
+      display: inline-block;
+      width: 50.4%;
+      vertical-align: top;
+    }
+
+    .input-group-addon {
+      border-radius: 0px;
+      min-width: 40px;
+    }
+
+    .form-verify input.error {
+      border-bottom: 1px solid red;
+    }
+
+    .form-verify select.error {
+      border-bottom: 1px solid red;
+    }
+
+    .form-verify textarea.error {
+      border: 1px solid red;
+    }
+
+    .form-verify h5.error {
+      color: red;
+      font-weight: bold;
+    }
+
+    .form-verify h3.error {
+      color: red;
+      font-weight: bold;
+    }
+
+    .form-group span.fee-box {
+      display: none;
+    }
+
+    /*headings*/
+    .fs-title {
+      font-size: 18px;
+      text-transform: uppercase;
+      color: #2C3E50;
+      margin-bottom: 10px;
+      margin-top: 10px;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .fs-subtitle {
+      font-weight: normal;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    label.error {
+      position: absolute;
+      top: -30px;
+      right: 0px;
+      color: red;
+      font-weight: 100;
+      font-style: italic;
+    }
+    h5.center {
+      text-align: center;
+      color: #484848;
+      font-weight: bold;
+    }
+
+    #upload-results {
+      text-align: left;
+    }
+  </style>
+</head>
+
+
+<body>
+<div id="wrapper">
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <!-- navbar header -->
+                <!--#include virtual="/styles/modern/includes/header/navbar-header.html" -->
+                [% INSERT '/home/www/html/styles/modern/includes/header/navbar-header.html' %]
+                <!-- end navbar header -->
+
+                <!-- search -->
+                <!--#include virtual="/styles/modern/includes/header/search-ssl.html" -->
+                [% INSERT '/home/www/html/styles/modern/includes/header/search-ssl.html' %]
+                <!-- end search -->
+
+                <!-- NSF header -->
+                <!--#include virtual="/styles/modern/includes/header/nsf-header.html" -->
+                [% INSERT '/home/www/html/styles/modern/includes/header/nsf-header.html' %]
+                <!-- end NSF header -->
+
+                <!-- main navigation -->
+                <!--#include virtual="/styles/modern/includes/navigation/models-nav.html" -->
+                [% INSERT '/home/www/html/styles/modern/includes/navigation/models-nav.html' %]
+            <!-- end main navigation -->
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+
+    <section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="breadcrumb">
+                        <li><a href="http://www.cesm.ucar.edu/"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/">CESM Models</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/current.html">CESM Supported Releases</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/cesm2/timing">CESM2</a><i class="icon-angle-right"></i></li>
+                        <li><a href="http://www.cesm.ucar.edu/models/cesm2/">Timing &amp; Performance</a><i class="icon-angle-right"></i></li>
+                        <li class="active"><a>Upload</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="post-image">
+                        <div class="post-heading">
+                            <h1>CESM2 Timing Upload</h1>
+                        </div>
+                    </div>
+
+                    <form id="formVerify" class="form-verify" action="" method="POST" style="clear: both;" enctype="multipart/form-data">
+                        <!-- fieldset user details start -->
+                        <fieldset style="" id="f-deets-user" class="deets">
+                            <h2 class="fs-title">File Details</h2>
+                            <h3 class="fs-subtitle">* Enter your details below *</h3>
+
+                            [% IF error %]
+                            <div class="alert alert-danger center" style="margin:0px; clear: both;">File upload error, please try again</div>
+                            [% END %]
+
+                            <div class="form-group">
+                              <h5><label for="f-file">Upload File</label></h5>
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-file" aria-hidden="true"></i></span>
+                                <input class="f-input f-file" name="file" size="" id="f-file" type="file" required>
+                              </div>
+                            </div>
+
+
+
+                            <div class="form-group">
+                              <span class="form-span">
+                                <h5><label for="f-cesm_tag">CESM Tag</label></h5>
+                                <div class="cols-sm-10">
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                    <input class="f-input" name="cesm_tag" id="f-cesm_tag" placeholder="..." required type="text" [% IF cgi %] value="[% cgiTag %]" [% END %]>
+                                  </div>
+                                </div>
+                              </span>
+
+                              <span style="margin-left: -10px;" class="form-span">
+                                <h5><label for="f-compset">Compset Alias</label></h5>
+                                <div class="cols-sm-10">
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                    <input class="f-input" name="compset" id="f-compset" placeholder="..." required type="text" [% IF cgi %] value="[% cgiAli %]" [% END %]>
+                                  </div>
+                                </div>
+                              </span>
+                            </div>
+
+                            
+                            <div class="form-group">
+                              <span class="form-span">
+                                <h5>Resolution Shortname</h5>
+                                <div class="input-group" style="margin-right: 8px;">
+                                  <span class="input-group-addon"><i class="fa fa-vcard" aria-hidden="true"></i></span>
+                                  <input name="resolution" placeholder="..." class="f-input" required type="text" [% IF cgi %] value="[% cgiRes %]" [% END %]>
+                                </div>
+                              </span>
+
+                              <span style="margin-right: -10px;" class="form-span">
+                                <h5 class="r-booked">New or Update <span class="small">* Feature coming soon *</span></h5>
+                                <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="false" type="radio" checked disabled> <label style="float: left; padding-left: 10px;" for="by">New</label>
+                                <div style="clear: both;"></div>
+
+                                <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="true" type="radio" disabled> <label style="float: left; padding-left: 10px;" for="bn">Update</label>
+                                <div style="clear: both;"></div> 
+                              </span>
+                            </div>
+
+                            <h5>Additional Information</h5>
+                            <textarea name="comments" id="" rows="6" cols="60" class="form-control" maxlength="256">[% IF cgi %] value="[% cgiCom %]" [% END %]</textarea>
+
+                            <br>
+
+                            <input type="submit" name="submit" class="btn-primary" value="Submit">
+                        </fieldset>
+                        <input type="hidden" name="update" value="false"/>
+                        <input type="hidden" name="action" value="uploadProc"/>
+                        <!-- fieldset user details end -->
+                    </form>
+                </div>
+
+                <div class="col-lg-4">
+                    <aside class="right-sidebar">
+                        <!-- CESM Project Include -->
+                        <!--#include virtual="/styles/modern/includes/col-lg-4/cesm-project-inc.html" -->
+                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
+                        <!-- end CESM Project Include -->
+
+                        <!-- Models Related Include -->
+                        <!--#include virtual="/styles/modern/includes/col-lg-4/models-related-inc.html" -->
+                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/models-related-inc-cesm2.html' %]
+                        <!-- end Models Related Include -->
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <!-- footer -->
+        <!--#include virtual="/styles/modern/includes/footer/footer-inc.html" -->
+        [% INSERT '/home/www/html/styles/modern/includes/footer/footer-inc.html' %]
+        <!-- end footer -->
+    </footer>
+</div>
+</body>
+</html>
