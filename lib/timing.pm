@@ -14,7 +14,7 @@ use lib "/home/www/html/csegdb/lib";
 use config;
 
 @ISA = qw(Exporter);
-@EXPORT = qw(getTimings getUserName);
+@EXPORT = qw(getTimings getUserName getCompiler getMpilib);
 
 sub getTimings
 {
@@ -37,8 +37,10 @@ sub getTimings
        $timing{'file_date'} = $ref->{'file_date'};
        $timing{'cesm_tag'} = $ref->{'cesm_tag'};
        $timing{'comments'} = $ref->{'comments'};
-       ($timing{'firstname'}, $timing{'lastname'}) = &getUserName($dbh, $ref->{'user_id'});
        $timing{'timing_file'} = $ref->{'timing_file'};
+       ($timing{'firstname'}, $timing{'lastname'}) = &getUserName($dbh, $ref->{'user_id'});
+       $timing{'compiler'} = &getCompiler($dbh, $ref->{'compiler_id'});
+       $timing{'mpilib'} = &getMpilib($dbh, $ref->{'mpilib_id'});
 
        # get the component timing data
        my $sql1 = qq(SELECT c.name,j.comp_pes, j.root_pes, j.tasks_threads FROM
@@ -81,5 +83,46 @@ sub getUserName
    }
    else {
        return ('Unknown','');
+   }
+}
+
+sub getCompiler
+{
+   my $dbh = shift;
+   my $compiler_id = shift;
+
+   my $sql = qq(SELECT count(name), name from t_compiler
+                WHERE compiler_id = $compiler_id);
+   my $sth = $dbh->prepare($sql);
+   $sth->execute();
+   my ($count, $name) = $sth->fetchrow();
+   $sth->finish();
+
+   if ($count) {
+       return $name;
+   }
+   else {
+       return 'Unknown';
+   }
+}
+
+
+sub getMpilib
+{
+   my $dbh = shift;
+   my $mpilib_id = shift;
+
+   my $sql = qq(SELECT count(name), name from t_mpilib
+                WHERE mpilib_id = $mpilib_id);
+   my $sth = $dbh->prepare($sql);
+   $sth->execute();
+   my ($count, $name) = $sth->fetchrow();
+   $sth->finish();
+
+   if ($count) {
+       return $name;
+   }
+   else {
+       return 'Unknown';
    }
 }

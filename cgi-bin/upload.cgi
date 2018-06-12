@@ -18,6 +18,8 @@ use lib "/home/www/html/csegdb/lib";
 use config;
 use session;
 use user;
+use lib "/home/www/html/testdb/lib";
+use widgets;
 
 Log::Log4perl->init("../conf/timing-log.conf");
 my $log = Log::Log4perl->get_logger();
@@ -135,8 +137,17 @@ sub uploadForm
 #
 # load up the vars hash to pass to the template
 #
+
+# get the list of compilers
+    my @compilers = getCompilers();
+
+# get the list of mpilibs
+    my @mpilibs = getMPILibs();
+
     my $vars = {
-   };
+	mpilibs => \@mpilibs,
+        compilers => \@compilers,
+    };
 
     $dbh->disconnect;
 
@@ -164,7 +175,7 @@ sub validateRequest
 # define the required fields for the validator
 #
     $dfv_profile = {
-	'required' => [ qw( file cesm_tag compset resolution update comments ) ],
+	'required' => [ qw( file cesm_tag compset resolution update comments compilerSelect mpilibSelect) ],
     };
 
     $results = Data::FormValidator->check( $req, $dfv_profile );
@@ -199,29 +210,21 @@ sub validateRequest
 
 sub uploadProcess
 {
-    #
-    # build up the SQL insert statement for a new account with pending approval request 
-    #
+    # load all input form parameters to the item hash
     for my $f ( $results->valid() ) {
 	$item{ $f } = $results->valid( $f );
-
     }
-    #
+
     # upload and parse timing file here...
-    #
     &uploadAndParse;
 
-    #
     # load up SQL statements from parsed timing file
-    #
     my $master_id;
     my $comp_id;
     my $components = "cpl|atm|lnd|ice|ocn|rof|glc|wav|esp";
     my @componentarray = (\%cpl,\%atm,\%lnd,\%ice,\%ocn,\%rof,\%glc,\%wav,\%esp);
 
-    #
     # Preping values for SQL insertion
-    #
     my $qcompset    = $dbh->quote($item{compset});
     my $qresolution = $dbh->quote($item{resolution});
     my $qcesm_tag   = $dbh->quote($item{cesm_tag});
@@ -231,9 +234,10 @@ sub uploadProcess
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
 
     my $sql = qq(INSERT INTO t_timeMaster (machine, resolution, compset, total_pes, cost, 
-                       throughput, file_date, cesm_tag, comments, user_id, timing_file) 
-                VALUES ($qmachine, $qresolution, $qcompset, $item{total_pes}, 
-                        $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, $item{luser_id}, $timing_file););
+                       throughput, file_date, cesm_tag, comments, user_id, timing_file, compiler_id, mpilib_id)
+                VALUE ($qmachine, $qresolution, $qcompset, $item{total_pes}, 
+                        $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, 
+                        $item{luser_id}, $timing_file, $item{compilerSelect}, $item{mpilibSelect}) );
     my $sth = $dbh->prepare($sql);
     $sth->execute();
     $sth->finish;
@@ -279,6 +283,7 @@ sub uploadProcess
     # Sends the user to the updated timing submission form.
     #
     &successPage;
+
 }
 
 #----------------------------
@@ -423,8 +428,15 @@ sub uploadAndParse
 
 sub successPage
 {
+    # logoff and close the session
+    &sessionlogout($session);
+
     print header;
-    print "<META HTTP-EQUIV=\"Refresh\" content =\"0; url=timings.cgi?a=s\">\n";
+    print qq(<META HTTP-EQUIV=\"Refresh\" content =\"0; url=timings.cgi?a=s\">\n);
+
+    $req->delete();
+    $dbh->disconnect;
+
     exit 0;
 }
 
@@ -438,8 +450,10 @@ sub successPage
 
 sub failurePage
 {   
+    # logoff and close the session
+    &sessionlogout($session);
 
-     my $vars = {
+    my $vars = {
     	'cgi'=>$req, 
 	'error'=>'failure',
 	'cgiTag' => $req->param('cesm_tag'),

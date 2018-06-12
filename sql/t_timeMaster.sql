@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS `t_timeMaster`;
 CREATE TABLE `t_timeMaster` (
   `id` integer NOT NULL AUTO_INCREMENT,
   `machine` varchar(20) DEFAULT NULL,
+  `compiler_id` integer DEFAULT NULL,
+  `mpilib_id` integer DEFAULT NULL,	
   `resolution` varchar(30) DEFAULT NULL,
   `compset` varchar(30) DEFAULT NULL,
   `total_pes` integer DEFAULT NULL,

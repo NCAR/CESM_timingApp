@@ -152,13 +152,15 @@
 		<thead>
 		  <tr>
 		    <th>Machine</th>
-		    <th>Resolution</th>
 		    <th>Compset</th>
+		    <th>Resolution</th>
+		    <th>Compiler</th>
+		    <th>mpilib</th>
 		    <th>Total PEs</th>
 		    <th>Cost pe-hrs/yr</th>
 		    <th>ThruPut yrs/day</th>
 		    <th>File Date</th>
-		    <th class="nont">File Upload User:</th>
+		    <th class="none">File Upload User:</th>
 		    <th class="none">CESM Tag:</th>
 		    <th class="none">Comments:</th>
 		    <th class="none">PE Layouts</th>
@@ -172,6 +174,8 @@
 		    <td>[% timing.machine %]</td>
 		    <td><a href="[% timing.timing_file %]"> [% timing.compset %] </a> </td>
 		    <td>[% timing.resolution %]</td>
+		    <td>[% timing.compiler %]</td>
+		    <td>[% timing.mpilib %]</td>
 		    <td>[% timing.total_pes %]</td>
 		    <td>[% timing.cost %]</td>
 		    <td>[% timing.throughput %]</td>
@@ -211,11 +215,13 @@
 		    <th>Machine</th>
 		    <th>Compset</th>
 		    <th>Resolution</th>
+		    <th>Compiler</th>
+		    <th>mpilib</th>
 		    <th>Total PEs</th>
 		    <th>Cost pe-hrs/yr</th>
 		    <th>ThruPut yrs/day</th>
 		    <th>File Date</th>
-		    <th>User Email</th>
+		    <th class="none">File Upload User:</th>
 		    <th class="none">CESM Tag:</th>
 		    <th class="none">Comments:</th>
 		    <th class="none">PE Layouts</th>
