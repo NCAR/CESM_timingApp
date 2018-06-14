@@ -118,7 +118,7 @@ sub showloginpage
 	};
 
 	#my $loginpage = "../templates/login.tt";
-	my $tt_template = "login.tt";
+	my $tt_template = "login.tmpl";
 	my $tt = Template->new(INCLUDE_PATH => "/home/www/html/timing/templates", ABSOLUTE => 1, EVAL_PERL => 1);
 	print "Content-type: text/html \n\n";
 	$tt->process($tt_template, $vars) or die ("problem processing $tt_template,", $tt->error());
