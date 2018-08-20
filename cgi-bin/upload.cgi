@@ -152,7 +152,7 @@ sub uploadForm
     $dbh->disconnect;
 
     print header;
-    #my $tmplFile = '../templates/uploadForm.tmpl';
+
     my $tt_template = "form.tt";
 
     my $template = Template->new({
@@ -175,7 +175,7 @@ sub validateRequest
 # define the required fields for the validator
 #
     $dfv_profile = {
-	'required' => [ qw( file cesm_tag compset resolution update comments compilerSelect mpilibSelect) ],
+	'required' => [ qw( file cesm_tag compset resolution update compilerSelect mpilibSelect) ],
     };
 
     $results = Data::FormValidator->check( $req, $dfv_profile );
@@ -228,16 +228,26 @@ sub uploadProcess
     my $qcompset    = $dbh->quote($item{compset});
     my $qresolution = $dbh->quote($item{resolution});
     my $qcesm_tag   = $dbh->quote($item{cesm_tag});
-    my $qcomments   = $dbh->quote($item{comments});
     my $qmachine    = $dbh->quote($item{machine});
     my $qrundate    = $dbh->quote($item{rundate});
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
+    my $qcomments;
+
+    if ( defined $item{comments} && $item{comments} ne "" )
+    {
+      $qcomments = $dbh->quote($item{comments});
+    }
+    else
+    {
+      $qcomments =  $dbh->quote("None");
+    }
 
     my $sql = qq(INSERT INTO t_timeMaster (machine, resolution, compset, total_pes, cost, 
                        throughput, file_date, cesm_tag, comments, user_id, timing_file, compiler_id, mpilib_id)
                 VALUE ($qmachine, $qresolution, $qcompset, $item{total_pes}, 
                         $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, 
                         $item{luser_id}, $timing_file, $item{compilerSelect}, $item{mpilibSelect}) );
+
     my $sth = $dbh->prepare($sql);
     $sth->execute();
     $sth->finish;
