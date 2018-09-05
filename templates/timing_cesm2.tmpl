@@ -11,17 +11,22 @@
     [% USE SSI %]
     <!-- css -->
 
-	<link href="https://www.cesm.ucar.edu/styles/modern/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="https://www.cesm.ucar.edu/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/bootstrap.min.css" rel="stylesheet" /> -->
+	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet"> -->
 	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/jcarousel.css" rel="stylesheet" /> -->
-	<link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" />
-	<link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" />
+        <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" /> -->
+        <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" /> -->
+	<link href="/styles/modern/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="/styles/modern/css/flexslider.css" rel="stylesheet" />
+	<link href="/styles/modern/css/style.css" rel="stylesheet" />
 	<link href="/styles/atmos/styles/fonts.css" rel="stylesheet">
 
     [% SSI.include('virtual','/styles/modern/js/js-include.html') %]
 
     <!-- Theme skin -->
-    <link href="https://www.cesm.ucar.edu/styles/modern/skins/default.css" rel="stylesheet" />
+    <!-- <link href="https://www.cesm.ucar.edu/styles/modern/skins/default.css" rel="stylesheet" /> -->
+    <link href="/styles/modern/skins/default.css" rel="stylesheet" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -146,6 +151,15 @@
 		<li>This information is constantly subject to change due to changes in the model or machine hardware and software.</li>
 		<li>Clicking on the compset name takes you to the raw timing output file.</li>
 		<li>The timing table results correspond to tag names in the raw timing file that may not be officially released. The timing information is valid but the tag should not necessarily be used for scientific simulations. Please refer to the <a href="http://www.cesm.ucar.edu">CESM website</a> for a complete list of supported CESM versions.</li>
+		<li>The estimates for model output I/O volumes at a given configuration are not included in this table. However, users can 
+calculate their own I/O volume estimates in one of two ways:
+		  <ol>
+		    <li>Run a <a href="http://esmci.github.io/cime/users_guide/testing.html">PFS_LM1 test</a> for a specified compset and resolution with the desired output variables added to the user_nl_* files and check the monthly restart history file sizes in the RUNDIR. </li>
+		    <li>If you have access to the machine with a timing file posted, then click on the compset name in the table below to see the raw timing table. Go to the <b>Caseroot</b> and find the DOUT_S_ROOT location and check the history output file sizes for each component in the archive directory. </li>
+		</ol>										
+		  The I/O volume in Gbytes/simulated year can then be calculated by this formula (monthly restart history file output size * 12 months) / 1x10^9.
+		  Note: CAM and CLM monthly restart history files sizes are first divided by 2 to account for double precision.
+		</li>
 		<li>Please contribute to this timing table using this <a href="/timing">form</a>.</li>
 		<li>Please post questions regarding optimal PE layout for supported machines to the <a href="http://bb.cgd.ucar.edu">DiscussCESM Forums</a>.</li>
 	      </ul>

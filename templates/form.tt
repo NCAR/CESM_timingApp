@@ -9,11 +9,16 @@
 
   <!-- css -->
   <!--#include virtual="/styles/modern/css/css-include.html" -->
-  <link href="https://www.cesm.ucar.edu/styles/modern/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://www.cesm.ucar.edu/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+  <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/bootstrap.min.css" rel="stylesheet" /> -->
+  <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet"> -->
   <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/jcarousel.css" rel="stylesheet" /> -->
-  <link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" />
-  <link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" />
+  <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" /> -->
+  <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" /> -->
+
+  <link href="/styles/modern/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+  <link href="/styles/modern/css/flexslider.css" rel="stylesheet" />
+  <link href="/styles/modern/css/style.css" rel="stylesheet" />
   <link href="/styles/atmos/styles/fonts.css" rel="stylesheet">
 
   <!-- Theme skin -->

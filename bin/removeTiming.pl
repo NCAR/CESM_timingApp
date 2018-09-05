@@ -35,10 +35,10 @@ if (!defined($time_id)) {
 #
 # delete from the t_time* tables
 #
-my $sql = qq(select count(id) from t_timeMaster where id = $time_id);
+my $sql = qq(select count(id), timing_file from t_timeMaster where id = $time_id);
 my $sth = $dbh->prepare($sql);
 $sth->execute() or die $dbh->errstr;
-my ($count) = $sth->fetchrow;
+my ($count, $timing_file) = $sth->fetchrow;
 $sth->finish;
 
 if ($count > 0) {
@@ -47,6 +47,9 @@ if ($count > 0) {
     $sth = $dbh->prepare($sql);
     $sth->execute() or die $dbh->errstr;
     $sth->finish;
+
+    # delete the timing file
+    unlink $timing_file;
 
     # delete from the t_timeMaster table
     $sql = qq(delete from t_timeMaster where id = $time_id);
