@@ -350,7 +350,7 @@ sub uploadAndParse
       # Get Run Date name
       elsif ($line =~ m/^  Curr Date/)
       {
-        $line =~ /([a-zA-Z]*) (\d\d) (\d\d:\d\d:\d\d) ([a-zA_Z0-9]*)/;
+        $line =~ /([a-zA-Z]*)\s+(\d+)\s+(\d\d:\d\d:\d\d)\s+([a-zA_Z0-9]*)/;
 	my $month = $mon2num{"$1"};
         $item{rundate} = "$4-$month-$2 $3";
       }
