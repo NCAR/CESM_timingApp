@@ -233,9 +233,9 @@ sub uploadProcess
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
     my $qcomments;
 
-    if ( defined $item{comments} && $item{comments} ne "" )
+    if ( defined $req->param('comments') && $req->param('comments') ne "" )
     {
-      $qcomments = $dbh->quote($item{comments});
+      $qcomments = $dbh->quote($req->param('comments'));
     }
     else
     {
