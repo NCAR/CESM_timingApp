@@ -13,6 +13,7 @@ use Log::Log4perl;
 use Exporter;
 use lib qw(.);
 use lib "/home/www/html/csegdb/lib";
+use anon_auth;
 use config;
 use session;
 use user;
@@ -20,8 +21,12 @@ use user;
 my $req = CGI->new;
 
 # get the username, password, action, and loginType.  
-my $user = $req->param('username');
-my $password = $req->param('password');
+my $user = $req->param('username') unless ! defined $req->param('username');
+my $password = $req->param('password') unless ! defined $req->param('password');
+my $firstName = $req->param('firstName') unless ! defined $req->param('firstName');
+my $lastName = $req->param('lastName') unless ! defined $req->param('lastName');
+my $email_address = $req->param('email') unless ! defined $req->param('email');
+
 my $action;
 if (defined $req->param('action'))
 {
@@ -38,6 +43,7 @@ my $sessionid = $req->param('CGISESSID');
 
 # Check to see if the user has a valid session. This creates a session that needs to destroyed if there is an error.
 my ($loggedin, $session) = &checksessionlogin($sessionid);
+my ($anonloggedin) = &checkanonsessionlogin($sessionid);
 
 #-----------------------------------------------------------------------------
 # Main...
@@ -54,7 +60,7 @@ elsif($action eq 'login')
 {
 	&login($session);
 }
-elsif($loggedin)
+elsif($loggedin || $anonloggedin)
 {
         &loginsuccess($req, $session);
 }
@@ -68,7 +74,7 @@ else
 #-------------------------------------------------------------------------------------
 
 
-# Handle the login.  Call authenticate from the session library. 
+# Handle the login.  Call authenticate from the session library or manually. 
 # If successful, make a new session, and redirect them to the main page. 
 # otherwise, show them the login page again, with the login error included.  
 sub login
@@ -84,12 +90,21 @@ sub login
     {
 	($authsuccessful, $autherror) = &ucas_authenticate($user, $password);
     }
-	
-    if($authsuccessful)
+    elsif($loginType eq 'OTHER')
+    {
+        ($authsuccessful, $autherror) = &anon_authenticate($firstName, $lastName, $email_address);
+    }
+
+    if($authsuccessful == 1)
     {
 	$session = &getuserbyusername($user, $session);
 	$session = &makeloginsession($req, $user, $session);
 	&loginsuccess($req, $session);
+    }
+    elsif($authsuccessful == 2)
+    {
+        $session = &makeanonloginsession($req, $firstName, $lastName, $email_address, $session);
+        &loginsuccess($req, $session);
     }
     else
     {
@@ -118,7 +133,8 @@ sub showloginpage
 	};
 
 	#my $loginpage = "../templates/login.tt";
-	my $tt_template = "login.tmpl";
+	#my $tt_template = "login.tmpl";
+	my $tt_template = "login.tt";
 	my $tt = Template->new(INCLUDE_PATH => "/home/www/html/timing/templates", ABSOLUTE => 1, EVAL_PERL => 1);
 	print "Content-type: text/html \n\n";
 	$tt->process($tt_template, $vars) or die ("problem processing $tt_template,", $tt->error());

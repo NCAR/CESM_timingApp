@@ -18,6 +18,7 @@ use lib "/home/www/html/csegdb/lib";
 use config;
 use session;
 use user;
+use anon_auth;
 use lib "/home/www/html/testdb/lib";
 use widgets;
 
@@ -65,9 +66,13 @@ my $dbpasswd = $config{'dbpassword'};
 my $dsn = $config{'dsn'};
 
 # Check the session, see if it's still valid. This will redirect to login page if needed.
-my ($loggedin, $session) = &checksession($req);
+my ($loggedin, $anonloggedin, $session) = &checkanonsession($req);
 my $cookie = $req->cookie(CGISESSID => $session->id);
 my $sid = $req->cookie('CGISESSID');
+
+# Email setup
+my $sendmail = "/usr/sbin/sendmail -t";
+my ($reqLast, $reqFirst, $reqEmail, $case_name, $reply_to, $content, $subject, $send_to);
 
 # define the results and formValidator objects
 my ($dfv_profile, $results);
@@ -79,19 +84,21 @@ my $dbh = DBI->connect($dsn, $dbuser, $dbpasswd) or die "unable to connect to db
 #
 # get the logged in user info loaded into the item hash
 #
+$item{adminEmails} = "";
+$item{ISG_Email} = "";
 $item{luser_id} = $session->param('user_id');
-$item{llastname} = $session->param('lastname');
-$item{lfirstname} = $session->param('firstname');
+$item{llastname} = $session->param('lastName');
+$item{lfirstname} = $session->param('firstName');
 $item{lemail} = $session->param('email');
 
-if ($loggedin == 1) { 
+if ($loggedin == 1 || $anonloggedin == 1) { 
     &doactions(\$req);
 }
 else {
     $dbh->disconnect;
     print $req->header(-cookie=>$cookie);
     print qq(<script type="text/javascript">
-              alert("Only SVN developers of UCAS logins are allowed to upload CESM timing files.");
+              alert("Only SVN developers or UCAS logins are allowed to upload CESM timing files.");
               window.close();
              </script>);
      exit 0;
@@ -107,6 +114,7 @@ sub doactions
 {
     my $action = $req->param('action') || '';
 
+    $item{comments} = $req->param('comments') || '';
     $item{message} = $req->param('message') || '';
 
     if( length($action) == 0 )
@@ -117,15 +125,45 @@ sub doactions
     if ($action eq 'uploadProc') 
     {
 	my $validated = &validateRequest($req);
-	if( $validated == 1 )
+
+	if ( $validated == 1 && $anonloggedin == 0 )
 	{
 	    &uploadProcess;
+	    &successPage;
+	}
+	elsif ( $validated == 1 && $anonloggedin == 1 )
+	{
+	    &anonUser;
+	    &uploadProcess;
+	    &emailAdmin;
+	    &successPage;
 	}
 	else 
 	{
 	    &uploadForm;
 	}
     }
+
+    &uploadForm;
+
+}
+
+#------------------
+# anonUser
+#------------------
+
+sub anonUser
+{
+    #
+    # Updates necessary variables configured for the anonymous user
+    #
+
+    $item{luser_id} = 968;
+    $item{lastname} = "User";
+    $item{firstname} = "Unaffiliated";
+    $item{email} = $session->param('email');
+
+    $item{comments} = "Submitted by: $item{lfirstname} $item{llastname} | Email: $item{email} | $item{comments}";
 }
 
 #------------------
@@ -162,6 +200,31 @@ sub uploadForm
 				 });
 
     $template->process($tt_template, $vars) || die ("Problem processing $tt_template, ", $template->error());
+}
+
+#-----------------
+# emailAdmin
+#-----------------
+
+sub emailAdmin
+{
+    #
+    # Emails the Admins that an anonymous user has submitted a timing file
+    #
+    
+    $reply_to = "Reply-to: $item{ISG_Email}\n";
+
+    $content = qq($item{lfirstname} $item{llastname} ($item{email}), a Non-NCAR affiliated user, has submitted a CESM2 Timing & Performance report to the CESM2 Timing Form. Please check the new addition at https://csegwebdev/timing/cgi-bin/timings.cgi to ensure it's authenticity.\n\n\n\nThis email is generated automatically by the Timing Form when an unafiliated user submits a report.\nIf this is an approved report, no further action is required.\nIf the report is malicious or submitted in error, please contact ISG at isg\@cgd.ucar.edu to remove this submission.\nReplying to this email will send an email to ISG.);
+    $subject = qq(Subject: *NOTICE* A new timing submission has been added by an Unaffiliated User.\n);
+    $send_to = qq(To: $item{adminEmails}\n);
+    open(SENDMAIL, "|$sendmail") or die "Cannot open $sendmail: $!";
+    print SENDMAIL $reply_to;
+    print SENDMAIL $subject;
+    print SENDMAIL $send_to;
+    print SENDMAIL "Content-type: text/plain\n\n";
+    print SENDMAIL $content;
+    close(SENDMAIL);
+
 }
 
 #--------------------
@@ -233,9 +296,10 @@ sub uploadProcess
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
     my $qcomments;
 
-    if ( defined $req->param('comments') && $req->param('comments') ne "" )
+
+    if ( defined $item{comments} && $item{comments} ne "")
     {
-      $qcomments = $dbh->quote($req->param('comments'));
+      $qcomments = $dbh->quote($item{comments});
     }
     else
     {
@@ -288,12 +352,6 @@ sub uploadProcess
       $sth->execute();
       $sth->finish;
     }
-
-    #
-    # Sends the user to the updated timing submission form.
-    #
-    &successPage;
-
 }
 
 #----------------------------
@@ -461,15 +519,25 @@ sub successPage
 sub failurePage
 {   
     # logoff and close the session
-    &sessionlogout($session);
+    #&sessionlogout($session);
+
+    # get the list of compilers
+    my @compilers = getCompilers();
+
+    # get the list of mpilibs
+    my @mpilibs = getMPILibs();
 
     my $vars = {
-    	'cgi'=>$req, 
-	'error'=>'failure',
-	'cgiTag' => $req->param('cesm_tag'),
-	'cgiAli' => $req->param('compset'),
-	'cgiCom' => $req->param('comments'), 
-	'cgiRes' => $req->param('resolution')
+    	'cgi'       => $req, 
+	'error'     => 'failure',
+	'cgiTag'    => $req->param('cesm_tag'),
+	'cgiAli'    => $req->param('compset'),
+	'cgiCom'    => $req->param('comments'), 
+	'cgiRes'    => $req->param('resolution'),
+	'cgiCompil' => $req->param('compilerSelect'),
+	'cgiMpilib' => $req->param('mpilibSelect'),
+        'mpilibs'   => \@mpilibs,
+        'compilers' => \@compilers
     };
 
     $dbh->disconnect;

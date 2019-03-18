@@ -355,9 +355,9 @@
                                 <div class="cols-sm-10">
                                   <div class="input-group">
 				    <select id="compilerSelect" name="compilerSelect">
-				      <option value="0" [% IF NOT compiler_id.defined %] selected [% END %]>-- Select --</option>
+				      <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
 				      [% FOREACH compiler IN compilers %]
-				      <option value="[% compiler.compiler_id %]" [% IF compiler.compiler_id == compiler_id %] selected [% END %]>[% compiler.name %]</option>
+				      <option value="[% compiler.compiler_id %]" [% IF compiler.compiler_id == cgiCompil %] selected [% END %]>[% compiler.name %]</option>
 				      [% END %]
 				    </select>
 				  </div>
@@ -369,9 +369,9 @@
                                 <div class="cols-sm-10">
                                   <div class="input-group">
 				    <select id="mpilibSelect" name="mpilibSelect">
-				      <option value="0" [% IF NOT compiler_id.defined %] selected [% END %]>-- Select --</option>
+				      <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
 				      [% FOREACH mpilib IN mpilibs %]
-				      <option value="[% mpilib.mpilib_id %]" [% IF mpilib.mpilib_id == mpilib_id %] selected [% END %]>[% mpilib.name %]</option>
+				      <option value="[% mpilib.mpilib_id %]" [% IF mpilib.mpilib_id == cgiMpilib %] selected [% END %]>[% mpilib.name %]</option>
 				      [% END %]
 				    </select>
 				  </div>
@@ -422,7 +422,7 @@
                             </div>
 
                             <h5>Additional Information</h5>
-                            <textarea name="comments" id="" rows="6" cols="60" class="form-control" maxlength="256">[% IF cgi %] value="[% cgiCom %]" [% END %]</textarea>
+			    <textarea name="comments" id="" rows="6" cols="60" class="form-control" maxlength="256" [% IF cgi %] value="[% cgiCom %]" [% END %]>[% IF cgi %] [%cgiCom %] [% END %]</textarea>
 
                             <br>
 

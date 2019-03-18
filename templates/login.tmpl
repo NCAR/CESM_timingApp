@@ -5,6 +5,30 @@
       href="http://www.cgd.ucar.edu/Images/atmos/favicon.png">
 <title>CESM2 Timing Upload Login page</title>
 </head>
+<script>
+  function hideStandard(x) 
+  {
+   if (x.checked) 
+    {
+      document.getElementById("standard1").style.display = "none";
+      document.getElementById("standard2").style.display = "none";
+      document.getElementById("anon1").style.display = "initial";
+      document.getElementById("anon2").style.display = "initial";
+      document.getElementById("anon3").style.display = "initial";
+    }
+  }
+  function hideAnon(x)
+  {
+    if (x.checked)
+    {
+      document.getElementById("standard1").style.display = "initial";
+      document.getElementById("standard2").style.display = "initial";
+      document.getElementById("anon1").style.display = "none";
+      document.getElementById("anon2").style.display = "none";
+      document.getElementById("anon3").style.display = "none";
+    }
+  } 
+</script>
 <body>
 
 <div class="loginform">
@@ -13,21 +37,37 @@
 <form method="post" action="/timing/cgi-bin/login.cgi">
 	<div align="center">	
 	<table border=0>
+	<td>
 	<tr>
-	<td><span class="loginlabel">Login type:</span</td>
-	<td><input type="radio" name="loginType" value="SVN" checked> SVN</input>&nbsp;&nbsp;
-	    <input type="radio" name="loginType" value="UCAS"> UCAS</input></td>
-	</tr>
-	<tr>
+	  <td>
+	  <span class="loginlabel"> &nbsp;&nbsp; Login type:</span>&nbsp;&nbsp;
+	  <input type="radio" name="loginType" onchange="hideAnon(this)" value="SVN" checked> SVN</input>&nbsp;&nbsp;
+	  <input type="radio" name="loginType" onchange="hideAnon(this)" value="UCAS"> UCAS</input>&nbsp;&nbsp;
+	  <input type="radio" name="loginType" onchange="hideStandard(this)" value="OTHER"> OTHER</input>&nbsp;&nbsp;
+	  </td>
+        </tr>
+        <tr id="standard1" style="display:initial">
 	<td><span class="loginlabel">Username:</span></td>
 	<td><input type="text" name="username" value=""></input></td>
 	</tr>
-	<tr>
+	<tr id="standard2" style="display:initial">
 	<td><span class="loginlabel">Password:</span></td>
 	<td><input type="password" name="password" value=""></input></td>
 	</tr>
+        <tr id="anon1" style="display:none">
+        <td><span class="loginlabel">First Name:</span></td>
+        <td><input type="text" name="firstName" value=""></input></td>
+        </tr>
+        <tr id="anon2" style="display:none">
+        <td><span class="loginlabel">Last Name:</span></td>
+        <td><input type="text" name="lastName" value=""></input></td>
+        </tr>
+        <tr id="anon3" style="display:none">
+        <td><span class="loginlabel">Email:</span></td>
+        <td><input type="text" name="email" value=""></input></td>
+        </tr>
+	</td>
 	</table>
-	<br>
 	<input class="btn"type="submit" name="submit" value="Log In"/>
 	    <input type="hidden" name="action" value="login"/>
 	<br><br>
