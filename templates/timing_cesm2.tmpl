@@ -10,14 +10,13 @@
 
     [% USE SSI %]
     <!-- css -->
-
 	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/bootstrap.min.css" rel="stylesheet" /> -->
 	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet"> -->
 	<!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/jcarousel.css" rel="stylesheet" /> -->
-        <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" /> -->
-        <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" /> -->
+    <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/flexslider.css" rel="stylesheet" /> -->
+    <!-- <link href="https://www.cesm.ucar.edu/styles/modern/css/style.css" rel="stylesheet" /> -->
 	<link href="/styles/modern/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="/styles/modern/css/fancybox/jquery.fancybox.css" rel="stylesheet">
 	<link href="/styles/modern/css/flexslider.css" rel="stylesheet" />
 	<link href="/styles/modern/css/style.css" rel="stylesheet" />
 	<link href="/styles/atmos/styles/fonts.css" rel="stylesheet">
@@ -64,32 +63,50 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
 
-    <script>
-      $(document).ready( function () {
-      $(".alert").on('click', function() {
-      $(this).fadeOut('fast');
-      })
+	<script>
+	$(document).ready( function () {
+		$(".alert").on('click', function() {
+			$(this).fadeOut('fast');
+		})
 
+		// checking for search string
+		if(window.location.href.indexOf("?search") > -1) {
+			// get the term to a variable
+			var term = window.location.href.slice(window.location.href.indexOf('?search') + 1).split('=')[1];
 
-      var table = $('#timingTable').DataTable( {
-      "responsive": true,
-      "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-      "order": [ [ 3, 'desc'], [ 0, 'asc'] ]
-      } );
+			term = term.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
 
-      // Handle click on "Expand All" button
-      $('button#btn-show-all-children').on('click', function(){
-      // Expand row details
-      table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
-      });
+			var table = $('#timingTable').DataTable( {
+				"search": {"search": term},
+				"responsive": true,
+				"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+				"order": [ [ 3, 'desc'], [ 0, 'asc'] ]
+			});
+		}
+		// no search string
+		else {
+			var table = $('#timingTable').DataTable( {
+				"responsive": true,
+				"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+				"order": [ [ 3, 'desc'], [ 0, 'asc'] ]
+			});
+		}
 
-      // Handle click on "Collapse All" button
-      $('button#btn-hide-all-children').on('click', function(){
-      // Collapse row details
-      table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
-      });
-      } );
-    </script>
+		
+
+		// Handle click on "Expand All" button
+		$('button#btn-show-all-children').on('click', function(){
+		// Expand row details
+		table.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+		});
+
+		// Handle click on "Collapse All" button
+		$('button#btn-hide-all-children').on('click', function(){
+		// Collapse row details
+		table.rows('.parent').nodes().to$().find('td:first-child').trigger('click');
+		});
+	});
+	</script>
   </head>
 
   <body>
@@ -160,7 +177,7 @@ calculate their own I/O volume estimates in one of two ways:
 		  The I/O volume in Gbytes/simulated year can then be calculated by this formula (monthly restart history file output size * 12 months) / 1x10^9.
 		  Note: CAM and CLM monthly restart history files sizes are first divided by 2 to account for double precision.
 		</li>
-		<li>Please contribute to this timing table using this <a href="/timing">form</a>.</li>
+		<li>Please contribute to this timing table using this <a href="/timing">form</a>&nbsp;&nbsp;&nbsp;<span class="small text-muted"><em><i class="fa fa-lock" aria-hidden="true"></i> Requires login</em></span></li>
 		<li>Please post questions regarding optimal PE layout for supported machines to the <a href="http://bb.cgd.ucar.edu">DiscussCESM Forums</a>.</li>
 	      </ul>
 

@@ -84,8 +84,8 @@ my $dbh = DBI->connect($dsn, $dbuser, $dbpasswd) or die "unable to connect to db
 #
 # get the logged in user info loaded into the item hash
 #
-$item{adminEmails} = "";
-$item{ISG_Email} = "";
+$item{adminEmails} = "joneill\@ucar.edu, ryanj\@ucar.edu, jedwards\@ucar.edu";
+$item{ISG_Email} = "webhelp\@cgd.ucar.edu";
 $item{luser_id} = $session->param('user_id');
 $item{llastname} = $session->param('lastName');
 $item{lfirstname} = $session->param('firstName');
@@ -158,7 +158,7 @@ sub anonUser
     # Updates necessary variables configured for the anonymous user
     #
 
-    $item{luser_id} = 968;
+    $item{luser_id} = 980;
     $item{lastname} = "User";
     $item{firstname} = "Unaffiliated";
     $item{email} = $session->param('email');
@@ -214,7 +214,7 @@ sub emailAdmin
     
     $reply_to = "Reply-to: $item{ISG_Email}\n";
 
-    $content = qq($item{lfirstname} $item{llastname} ($item{email}), a Non-NCAR affiliated user, has submitted a CESM2 Timing & Performance report to the CESM2 Timing Form. Please check the new addition at https://csegwebdev/timing/cgi-bin/timings.cgi to ensure it's authenticity.\n\n\n\nThis email is generated automatically by the Timing Form when an unafiliated user submits a report.\nIf this is an approved report, no further action is required.\nIf the report is malicious or submitted in error, please contact ISG at isg\@cgd.ucar.edu to remove this submission.\nReplying to this email will send an email to ISG.);
+    $content = qq($item{lfirstname} $item{llastname} ($item{email}), a Non-NCAR affiliated user, has submitted a CESM2 Timing & Performance report to the CESM2 Timing Form. Please check the new addition at https://csegweb.cgd.ucar.edu/timing/cgi-bin/timings.cgi?search=$item{email} to ensure it's authenticity.\n\n\n\nThis email is generated automatically by the Timing Form when an unafiliated user submits a report.\nIf this is an approved report, no further action is required.\nIf the report is malicious or submitted in error, please contact ISG at isg\@cgd.ucar.edu to remove this submission.\nReplying to this email will send an email to ISG.);
     $subject = qq(Subject: *NOTICE* A new timing submission has been added by an Unaffiliated User.\n);
     $send_to = qq(To: $item{adminEmails}\n);
     open(SENDMAIL, "|$sendmail") or die "Cannot open $sendmail: $!";

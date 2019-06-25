@@ -63,6 +63,7 @@ sub getTimings
        $timing{'compTimes'} = \%compTime;
        push(@timings, \%timing);
    }
+   $sth->finish();
    return @timings;
 }
 
