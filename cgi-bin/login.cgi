@@ -86,9 +86,13 @@ sub login
     {
 	($authsuccessful, $autherror) = &svn_authenticate($user, $password);
     }
-    elsif($loginType eq 'UCAS')
+#    elsif($loginType eq 'UCAS')
+#    {
+#	($authsuccessful, $autherror) = &ucas_authenticate($user, $password);
+#    }
+    elsif($loginType eq 'CIT')
     {
-	($authsuccessful, $autherror) = &ucas_authenticate($user, $password);
+        ($authsuccessful, $autherror) = &cit_authenticate($user, $password);
     }
     elsif($loginType eq 'OTHER')
     {

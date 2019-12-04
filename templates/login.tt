@@ -141,9 +141,15 @@
                                                 </label>
                                             </div>
 
-                                            <div class="radio">
+<!--                                            <div class="radio">
                                                 <label>
                                                     <input type="radio" name="loginType" id="loginTypeUCAS" value="UCAS" class="login-type-radio"> UCAS
+                                                </label>
+					    </div> -->
+
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="loginType" id="loginTypeCIT" value="CIT" class="login-type-radio"> CIT
                                                 </label>
                                             </div>
 
