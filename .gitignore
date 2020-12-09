@@ -3,3 +3,6 @@
 
 # don't store timing_files in the repo
 timing_files/*
+
+# don't store .DS_Store from macs
+.DS_Store
