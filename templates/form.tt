@@ -412,13 +412,14 @@
                               </span>
 
                               <span style="margin-right: -10px;" class="form-span">
-                                <h5 class="r-booked">New or Update <span class="small">* Feature coming soon *</span></h5>
+<!--                            <h5 class="r-booked">New or Update <span class="small">* Feature coming soon *</span></h5>
                                 <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="false" type="radio" checked disabled> <label style="float: left; padding-left: 10px;" for="by">New</label>
                                 <div style="clear: both;"></div>
 
                                 <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="true" type="radio" disabled> <label style="float: left; padding-left: 10px;" for="bn">Update</label>
                                 <div style="clear: both;"></div> 
-                              </span>
+-->                           </span>
+
                             </div>
 
                             <h5>Additional Information</h5>
