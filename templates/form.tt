@@ -18,169 +18,167 @@
 
 
 <body>
-    <div id="wrapper">
-        <!-- header -->
-        [% INSERT '/home/www/html/styles/um/includes/header/navbar.html' %]
+<div id="wrapper">
+    <!-- header -->
+    [% INSERT '/home/www/html/styles/um/includes/header/navbar.html' %]
 
-        <!-- start breadcrumb menu -->
-        <section id="inner-headline">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="https://www.cesm.ucar.edu"><i class="fa fa-home"></i> CESM Home</a></li>
-                                <li class="breadcrumb-item"><a href="https://www.cesm.ucar.edu/models">CESM Models</a></li>
-                                <li class="breadcrumb-item"><a href="/">CSEG Database Applications</a></li>
-                                <li class="breadcrumb-item"><a href="/timing/cgi-bin/timings.cgi">Timing &amp; Performance</a></li>
-                                <li class="breadcrumb-item active">Upload</li>
-                            </ol>
-                        </nav>
-                    </div>
+    <!-- start breadcrumb menu -->
+    <section id="inner-headline">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="https://www.cesm.ucar.edu"><i class="fa fa-home"></i> CESM Home</a></li>
+                            <li class="breadcrumb-item"><a href="https://www.cesm.ucar.edu/models">CESM Models</a></li>
+                            <li class="breadcrumb-item"><a href="/">CSEG Database Applications</a></li>
+                            <li class="breadcrumb-item"><a href="/timing/cgi-bin/timings.cgi">Timing &amp; Performance</a></li>
+                            <li class="breadcrumb-item active">Upload</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
-        </section>
-        <!-- end breadcrumb menu -->
+        </div>
+    </section>
+    <!-- end breadcrumb menu -->
 
 
-        <section id="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="post-image">
-                            <div class="post-heading">
-                                <h1>CESM2 Timing Upload</h1>
-                            </div>
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="post-image">
+                        <div class="post-heading">
+                            <h1>CESM2 Timing Upload</h1>
                         </div>
+                    </div>
 
-                        <form id="formVerify" class="form-verify" action="" method="POST" style="clear: both;" enctype="multipart/form-data">
-                            <!-- fieldset user details start -->
-                            <fieldset style="" id="f-deets-user" class="deets">
-                                <h2 class="fs-title">File Details</h2>
-                                <h3 class="fs-subtitle">* Enter your details below *</h3>
+                    <form id="formVerify" class="form-verify" action="" method="POST" style="clear: both;" enctype="multipart/form-data">
+                        <!-- fieldset user details start -->
+                        <fieldset style="" id="f-deets-user" class="deets">
+                            <h2 class="fs-title">File Details</h2>
+                            <h3 class="fs-subtitle">* Enter your details below *</h3>
 
-                                [% IF error %]
-                                    <div class="alert alert-danger center" style="margin:0px; clear: both;">File upload error, please try again</div>
-                                [% END %]
+                            [% IF error %]
+                                <div class="alert alert-danger center" style="margin:0px; clear: both;">File upload error, please try again</div>
+                            [% END %]
 
-                                <div class="form-group">
-                                  <h5><label for="f-file">Upload File</label></h5>
+                            <div class="form-group">
+                                <h5><label for="f-file">Upload File</label></h5>
 
-                                  <div class="input-group">
-                                    <input class="form-control f-input f-file" name="file" size="" id="f-file" type="file" required>
+                                <div class="input-group">
+                                    <input class=" f-input f-file" name="file" size="" id="f-file" type="file" required>
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                              <span class="form-span">
-                                <h5><label for="f-compiler">Compiler</label></h5>
-                                <div class="cols-sm-10">
-                                  <div class="input-group">
-                                    <select id="compilerSelect" name="compilerSelect">
-                                      <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
-                                      [% FOREACH compiler IN compilers %]
-                                      <option value="[% compiler.compiler_id %]" [% IF compiler.compiler_id == cgiCompil %] selected [% END %]>[% compiler.name %]</option>
-                                      [% END %]
-                                  </select>
-                              </div>
-                          </div>
-                      </span>
+                                <span class="form-span">
+                                    <h5><label for="f-compiler">Compiler</label></h5>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <select id="compilerSelect" name="compilerSelect">
+                                                <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
+                                                [% FOREACH compiler IN compilers %]
+                                                <option value="[% compiler.compiler_id %]" [% IF compiler.compiler_id == cgiCompil %] selected [% END %]>[% compiler.name %]</option>
+                                                [% END %]
+                                            </select>
+                                        </div>
+                                    </div>
+                                </span>
 
-                      <span style="margin-left: -10px;" class="form-span">
-                        <h5><label for="f-mpilib">MPI Library</label></h5>
-                        <div class="cols-sm-10">
-                          <div class="input-group">
-                            <select id="mpilibSelect" name="mpilibSelect">
-                              <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
-                              [% FOREACH mpilib IN mpilibs %]
-                              <option value="[% mpilib.mpilib_id %]" [% IF mpilib.mpilib_id == cgiMpilib %] selected [% END %]>[% mpilib.name %]</option>
-                              [% END %]
-                          </select>
-                      </div>
-                  </div>
-              </span>
-          </div>
+                                <span style="margin-left: -10px;" class="form-span">
+                                    <h5><label for="f-mpilib">MPI Library</label></h5>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <select id="mpilibSelect" name="mpilibSelect">
+                                                <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
+                                                [% FOREACH mpilib IN mpilibs %]
+                                                <option value="[% mpilib.mpilib_id %]" [% IF mpilib.mpilib_id == cgiMpilib %] selected [% END %]>[% mpilib.name %]</option>
+                                                [% END %]
+                                        </select>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
 
-          <div class="form-group">
-              <span class="form-span">
-                <h5><label for="f-cesm_tag">CESM Tag</label></h5>
-                <div class="cols-sm-10">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i></span>
-                    <input class="f-input" name="cesm_tag" id="f-cesm_tag" placeholder="..." required type="text" [% IF cgi %] value="[% cgiTag %]" [% END %]>
-                </div>
-            </div>
-        </span>
+                            <div class="form-group">
+                                <span class="form-span">
+                                    <h5><label for="f-cesm_tag">CESM Tag</label></h5>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-tag" aria-hidden="true"></i></span>
+                                            <input class="f-input" name="cesm_tag" id="f-cesm_tag" placeholder="..." required type="text" [% IF cgi %] value="[% cgiTag %]" [% END %]>
+                                        </div>
+                                    </div>
+                                </span>
 
-        <span style="margin-left: -10px;" class="form-span">
-            <h5><label for="f-compset">Compset Alias</label></h5>
-            <div class="cols-sm-10">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
-                <input class="f-input" name="compset" id="f-compset" placeholder="..." required type="text" [% IF cgi %] value="[% cgiAli %]" [% END %]>
-            </div>
-        </div>
-    </span>
-</div>
+                                <span style="margin-left: -10px;" class="form-span">
+                                    <h5><label for="f-compset">Compset Alias</label></h5>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-picture-o" aria-hidden="true"></i></span>
+                                            <input class="f-input" name="compset" id="f-compset" placeholder="..." required type="text" [% IF cgi %] value="[% cgiAli %]" [% END %]>
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
 
 
-<div class="form-group">
-  <span class="form-span">
-    <h5>Resolution Shortname</h5>
-    <div class="input-group" style="margin-right: 8px;">
-      <span class="input-group-addon"><i class="fa fa-vcard" aria-hidden="true"></i></span>
-      <input name="resolution" placeholder="..." class="f-input" required type="text" [% IF cgi %] value="[% cgiRes %]" [% END %]>
-  </div>
-</span>
+                            <div class="form-group">
+                                <span class="form-span">
+                                    <h5>Resolution Shortname</h5>
+                                    <div class="input-group" style="margin-right: 8px;">
+                                        <span class="input-group-addon"><i class="fa fa-vcard" aria-hidden="true"></i></span>
+                                        <input name="resolution" placeholder="..." class="f-input" required type="text" [% IF cgi %] value="[% cgiRes %]" [% END %]>
+                                    </div>
+                                </span>
 
-<span style="margin-right: -10px;" class="form-span">
-<!--                            <h5 class="r-booked">New or Update <span class="small">* Feature coming soon *</span></h5>
+                                <span style="margin-right: -10px;" class="form-span">
+                                <!--                            <h5 class="r-booked">New or Update <span class="small">* Feature coming soon *</span></h5>
                                 <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="false" type="radio" checked disabled> <label style="float: left; padding-left: 10px;" for="by">New</label>
                                 <div style="clear: both;"></div>
 
                                 <input style="float: left; width:13px; margin-left: 5px;" class="f-input" name="tmp" value="true" type="radio" disabled> <label style="float: left; padding-left: 10px;" for="bn">Update</label>
                                 <div style="clear: both;"></div> 
-                            -->                           </span>
+                                --> </span>
 
-                        </div>
+                            </div>
 
-                        <h5>Additional Information</h5>
-                        <textarea name="comments" id="" rows="6" cols="60" class="form-control" maxlength="256" [% IF cgi %] value="[% cgiCom %]" [% END %]>[% IF cgi %] [%cgiCom %] [% END %]</textarea>
+                            <h5>Additional Information</h5>
+                            <textarea name="comments" id="" rows="6" cols="60" class="form-control" maxlength="256" [% IF cgi %] value="[% cgiCom %]" [% END %]>[% IF cgi %] [%cgiCom %] [% END %]</textarea>
 
-                        <br>
+                            <br>
 
-                        <input type="submit" name="submit" class="btn-primary" value="Submit">
-                    </fieldset>
-                    <input type="hidden" name="update" value="false"/>
-                    <input type="hidden" name="action" value="uploadProc"/>
-                    <!-- fieldset user details end -->
-                </form>
-            </div>
+                            <input type="submit" name="submit" class="btn-primary" value="Submit">
+                        </fieldset>
+                        
+                        <input type="hidden" name="update" value="false"/>
+                        <input type="hidden" name="action" value="uploadProc"/>
+                        <!-- fieldset user details end -->
+                    </form>
+                </div>
 
-            <div class="col-lg-4">
-                <aside class="right-sidebar">
-                    <!-- CESM Project Include -->
-                    <!--#include virtual="/styles/modern/includes/col-lg-4/cesm-project-inc.html" -->
-                    [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
-                    <!-- end CESM Project Include -->
+                <div class="col-lg-4">
+                    <aside class="right-sidebar">
+                        <!-- CESM Project Include -->
+                        [% INSERT '/home/www/html/styles/um/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
+                        <!-- end CESM Project Include -->
 
-                    <!-- Models Related Include -->
-                    <!--#include virtual="/styles/modern/includes/col-lg-4/models-related-inc.html" -->
-                    [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/models-related-inc-cesm2.html' %]
-                    <!-- end Models Related Include -->
-                </aside>
+                        <!-- Models Related Include -->
+                        [% INSERT '/home/www/html/styles/um/includes/col-lg-4/models-related-inc-cesm2.html' %]
+                        <!-- end Models Related Include -->
+                    </aside>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<footer>
-    <!-- footer -->
-    <!--#include virtual="/styles/modern/includes/footer/footer-inc.html" -->
-    [% INSERT '/home/www/html/styles/um/includes/footer/footer-inc.html' %]
-    <!-- end footer -->
-</footer>
+    <footer>
+        <!-- footer -->
+        [% INSERT '/home/www/html/styles/um/includes/footer/footer-inc.html' %]
+        <!-- end footer -->
+    </footer>
 </div>
 </body>
 </html>
