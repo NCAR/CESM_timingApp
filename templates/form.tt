@@ -152,7 +152,7 @@
 
                             <input type="submit" name="submit" class="btn-primary" value="Submit">
                         </fieldset>
-                        
+
                         <input type="hidden" name="update" value="false"/>
                         <input type="hidden" name="action" value="uploadProc"/>
                         <!-- fieldset user details end -->
@@ -162,11 +162,11 @@
                 <div class="col-lg-4">
                     <aside class="right-sidebar">
                         <!-- CESM Project Include -->
-                        [% INSERT '/home/www/html/styles/um/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
+                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
                         <!-- end CESM Project Include -->
 
                         <!-- Models Related Include -->
-                        [% INSERT '/home/www/html/styles/um/includes/col-lg-4/models-related-inc-cesm2.html' %]
+                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/models-related-inc-cesm2.html' %]
                         <!-- end Models Related Include -->
                     </aside>
                 </div>
