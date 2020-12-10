@@ -102,7 +102,7 @@
 							<p class="mb-0">The I/O volume in Gbytes/simulated year can then be calculated by this formula (monthly restart history file output size * 12 months) / 1x10^9</p>
 							<p class="small text-muted">Note: CAM and CLM monthly restart history files sizes are first divided by 2 to account for double precision</p>
 
-							<p>Staff members can contribute to this timing table using this <a href="/timing">form</a> <span class="small text-muted pl-3"><em><i class="fa fa-lock" aria-hidden="true"></i> Requires login</em></p>
+							<p class="mb-0">Staff members can contribute to this timing table using this <a href="/timing">form</a> <span class="small text-muted pl-3"><em><i class="fa fa-lock" aria-hidden="true"></i> Requires login</em></p>
 						</div>
 
 
@@ -118,6 +118,7 @@
 									<th>Compset</th>
 									<th>Resolution</th>
 									<th>Compiler</th>
+									<th>Driver</th>
 									<th>mpilib</th>
 									<th>Total PEs</th>
 									<th>Cost pe-hrs/yr</th>
@@ -138,6 +139,7 @@
 									<td><a href="[% timing.timing_file %]"> [% timing.compset %] </a> </td>
 									<td>[% timing.resolution %]</td>
 									<td>[% timing.compiler %]</td>
+									<td>CPL7</td>
 									<td>[% timing.mpilib %]</td>
 									<td>[% timing.total_pes %]</td>
 									<td>[% timing.cost %]</td>
