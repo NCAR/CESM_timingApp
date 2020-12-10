@@ -292,6 +292,7 @@ sub uploadProcess
     my $qresolution = $dbh->quote($item{resolution});
     my $qcesm_tag   = $dbh->quote($item{cesm_tag});
     my $qmachine    = $dbh->quote($item{machine});
+    my $qdriver     = $dbh->quote($item{driver});
     my $qrundate    = $dbh->quote($item{rundate});
     my $timing_file = $dbh->quote("../timing_files/" . $req->param('file'));
     my $qcomments;
@@ -306,9 +307,9 @@ sub uploadProcess
       $qcomments =  $dbh->quote("None");
     }
 
-    my $sql = qq(INSERT INTO t_timeMaster (machine, resolution, compset, total_pes, cost, 
+    my $sql = qq(INSERT INTO t_timeMaster (machine, driver, resolution, compset, total_pes, cost, 
                        throughput, file_date, cesm_tag, comments, user_id, timing_file, compiler_id, mpilib_id)
-                VALUE ($qmachine, $qresolution, $qcompset, $item{total_pes}, 
+                VALUE ($qmachine, $qdriver, $qresolution, $qcompset, $item{total_pes}, 
                         $item{model_cost}, $item{throughput}, $qrundate, $qcesm_tag, $qcomments, 
                         $item{luser_id}, $timing_file, $item{compilerSelect}, $item{mpilibSelect}) );
 
@@ -419,8 +420,14 @@ sub uploadAndParse
       elsif ($line =~ m/^  Curr Date/)
       {
         $line =~ /([a-zA-Z]*)\s+(\d+)\s+(\d\d:\d\d:\d\d)\s+([a-zA_Z0-9]*)/;
-	my $month = $mon2num{"$1"};
+      	my $month = $mon2num{"$1"};
         $item{rundate} = "$4-$month-$2 $3";
+      }
+      # get the driver info
+      elsif ($line =~ m/^  Driver/)
+      {
+        $line =~ /([a-zA-Z0-9]*)$/;
+        $item{driver} = $1;
       }
       # Get Total # of Active PEs
       elsif ($line =~ m/^  total pes active/)
@@ -457,7 +464,7 @@ sub uploadAndParse
 
         $line =~ /([a-zA-Z]*)\s+=\s+([a-zA-Z0-9]*)\s+([0-9]*)\s+([0-9]*)\s+([0-9]*)\s*x\s*([0-9]*)\s+([0-9]*)\s+\(([0-9]*)\s+\)/;
         %lnd = ( "component" => "$1", "model" => "$2", "comp_pe" => "$3", "root_pe" => "$4", "tasks" => "$5", "threads" => "$6", "instances" => "$7", "stride" => "$8");
-	$line = <$file>;
+      	$line = <$file>;
 
         $line =~ /([a-zA-Z]*)\s+=\s+([a-zA-Z0-9]*)\s+([0-9]*)\s+([0-9]*)\s+([0-9]*)\s*x\s*([0-9]*)\s+([0-9]*)\s+\(([0-9]*)\s+\)/;
         %ice = ( "component" => "$1", "model" => "$2", "comp_pe" => "$3", "root_pe" => "$4", "tasks" => "$5", "threads" => "$6", "instances" => "$7", "stride" => "$8");

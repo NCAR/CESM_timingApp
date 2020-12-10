@@ -29,6 +29,7 @@ sub getTimings
        my %timing;
        $timing{'id'} = $ref->{'id'};
        $timing{'machine'} = $ref->{'machine'};
+       $timing{'driver'} = $ref->{'driver'};
        $timing{'resolution'} = $ref->{'resolution'};
        $timing{'compset'} = $ref->{'compset'};
        $timing{'total_pes'} = $ref->{'total_pes'};
