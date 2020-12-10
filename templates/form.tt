@@ -76,7 +76,7 @@
                                 <div class="col-lg-6">
                                     <h5><label for="f-compiler">Compiler</label></h5>
                                     <div class="input-group">
-                                        <select class="form-control" id="compilerSelect" name="compilerSelect">
+                                        <select class="form-control p-0" id="compilerSelect" name="compilerSelect">
                                             <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
                                             [% FOREACH compiler IN compilers %]
                                             <option value="[% compiler.compiler_id %]" [% IF compiler.compiler_id == cgiCompil %] selected [% END %]>[% compiler.name %]</option>
@@ -88,7 +88,7 @@
                                 <span class="col-lg-6">
                                     <h5><label for="f-mpilib">MPI Library</label></h5>
                                     <div class="input-group">
-                                        <select class="form-control" id="mpilibSelect" name="mpilibSelect">
+                                        <select class="form-control p-0" id="mpilibSelect" name="mpilibSelect">
                                             <option value="0" [% IF NOT cgiCompil.defined %] selected [% END %]>-- Select --</option>
                                             [% FOREACH mpilib IN mpilibs %]
                                             <option value="[% mpilib.mpilib_id %]" [% IF mpilib.mpilib_id == cgiMpilib %] selected [% END %]>[% mpilib.name %]</option>
