@@ -1,234 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CESM2 Timing &amp; Performance | Login</title>
-    <link rel="shortcut icon" href="http://www.cesm.ucar.edu/favicon.ico">
+    <title>CESM2 Timing Login</title>
+    <link rel="shortcut icon" href="/favicon.ico">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="" />
 
     <!-- css -->
     <!--#include virtual="/styles/modern/css/css-include.html" -->
-    [% INSERT '/home/www/html/styles/modern/css/css-include.html' %]
+    [% INSERT '/home/www/html/styles/um/css/css-include.html' %]
 
-    <!-- Theme skin -->
-    <link href="/styles/modern/skins/default.css" rel="stylesheet" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-        <script src="/styles/modern/js/html5shiv.js"></script>
+        <script src="/styles/um/js/html5shiv.js"></script>
     <![endif]-->
 </head>
 
+<body class="body-signin">
+    <form class="form-signin" method="POST">
+        <img class="mb-5 form-signin-logo" src="https://www.cgd.ucar.edu/Images/logos/logo-ncar-600.png" alt="NCAR Logo">
+        <p class="my-0 text-cesm mb-4">Enter your credentials below</p>
 
-<body>
-<div id="wrapper">
-    <!-- start header -->
-    <header>
-        <div class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <!-- navbar header -->
-                <!--#include virtual="/styles/modern/includes/header/navbar-header.html" -->
-                [% INSERT '/home/www/html/styles/modern/includes/header/navbar-header.html' %]
-                <!-- end navbar header -->
-
-                <!-- search -->
-                <!--#include virtual="/styles/modern/includes/header/search-ssl.html" -->
-                [% INSERT '/home/www/html/styles/modern/includes/header/search-ssl.html' %]
-                <!-- end search -->
-
-                <!-- NSF header -->
-                <!--#include virtual="/styles/modern/includes/header/nsf-header.html" -->
-                [% INSERT '/home/www/html/styles/modern/includes/header/nsf-header.html' %]
-                <!-- end NSF header -->
-
-                <!-- main navigation -->
-                <!--#include virtual="/styles/modern/includes/navigation/models-nav.html" -->
-                [% INSERT '/home/www/html/styles/modern/includes/navigation/models-nav.html' %]
-                <!-- end main navigation -->
-            </div>
+        [% IF error %]
+        <div class="alert alert-danger center" role="alert">
+            [% error %]
         </div>
-    </header>
-    <!-- end header -->
+        [% END %]
 
-    <section id="inner-headline">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="breadcrumb">
-                        <li><a href="http://www.cesm/ucar/edu/index.html"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
-                        <li><a href="http://www.cesm.ucar.edu/models/">CESM Models</a><i class="icon-angle-right"></i></li>
-                        <li><a href="https://csegweb.cgd.ucar.edu/">CSEG Web Apps</a><i class="icon-angle-right"></i></li>
-                        <li class="active">Login</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="form-group-standard">
+            <label for="f-username" class="sr-only">username</label>
+            <input name="username" type="text" id="f-username" class="form-control" placeholder="username" autofocus>
+
+            <label for="f-password" class="sr-only">password</label>
+            <input name="password" type="password" id="f-password" class="form-control" placeholder="password">
         </div>
-    </section>
 
-    <section id="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="post-image">
-                        <div class="post-heading">
-                            <h1>CESM2 Timing Upload | Login</h1>
-                        </div>
-                    </div>
+        <div class="form-group-anon hide-me">
+            <label for="f-firstName" class="sr-only">first name</label>
+            <input name="firstName" type="text" id="f-firstName" class="form-control" placeholder="First Name">
 
-                    <form id="" class="form-login text-center" method="POST" action="/timing/cgi-bin/login.cgi" enctype="multipart/form-data">
-                        <fieldset id="" class="">
-                            <h2 class="fs-title">User Details</h2>
-                            <h3 class="fs-subtitle">* Enter your credentials below *</h3>
+            <label for="f-lastName" class="sr-only">last name</label>
+            <input name="lastName" type="text" id="f-lastName" class="form-control" placeholder="Last Name">
 
-                            [% IF error %]
-                                <div class="alert alert-danger center" style="margin:0px; clear: both;">[% error %]</div>
-                            [% END %]
-
-                            <div class="form-group-standard">
-                                <div class="form-group">
-                                    <h5 class="form-label"><label for="f-username">Username</label></h5>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                        <input class="f-input" type="text" name="username" id="f-username" placeholder="..."  [% IF username %] value="[% username %]" [% END %]>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <h5 class="form-label"><label for="f-password">Password</label></h5>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                        <input class="f-input" type="password" name="password" id="f-password" placeholder="..." >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group-anon hide-me">
-                                <div class="form-group">
-                                    <h5 class="form-label"><label for="f-firstName">First Name</label></h5>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                        <input class="f-input" type="text" name="firstName" id="f-firstName" placeholder="..."  [% IF firstName %] value="[% firstName %]" [% END %]>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <h5 class="form-label"><label for="f-lastName">Last Name</label></h5>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                                        <input class="f-input" type="text" name="lastName" id="f-lastName" placeholder="..."  [% IF lastName %] value="[% lastName %]" [% END %]>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <h5 class="form-label"><label for="f-email">Email</label></h5>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                                        <input class="f-input" type="text" name="email" id="f-email" placeholder="..."  [% IF email %] value="[% email %]" [% END %]>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group text-left">
-                                        <span class="form-span">
-                                            <h5 class="form-label" style=""><label>Login Type</label></h5>
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="loginType" id="loginTypeSVN" value="SVN" class="login-type-radio"> SVN
-                                                </label>
-                                            </div>
-
-<!--                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="loginType" id="loginTypeUCAS" value="UCAS" class="login-type-radio"> UCAS
-                                                </label>
-					    </div> -->
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="loginType" id="loginTypeCIT" value="CIT" class="login-type-radio"> CIT
-                                                </label>
-                                            </div>
-
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="loginType" id="loginTypeOTHER" value="OTHER" class="login-type-radio"> OTHER
-                                                </label>
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 paddingtop40">
-                                    <a href="https://csegweb.cgd.ucar.edu/svnuser/cgi-bin/repo_access_form.cgi">Need a CESM SVN developers login?</a> 
-                                    <br><br>
-                                    <a href="http://www.cgd.ucar.edu/systems/documentation/faqs/computing/subversion_info2.html">Forgot your SVN login or password?</a>
-                                </div>
-                            </div>
-                            <input type="hidden" name="action" value="login">
-
-                            <input type="submit" name="submit" class="btn-primary" value="Log In">
-                        </fieldset>
-                    </form>
-                </div>
-
-
-                <div class="col-lg-4">
-                    <aside class="right-sidebar">
-                        <!-- CESM Project Include -->
-                        <!--#include virtual="/styles/modern/includes/col-lg-4/cesm-project-inc.html" -->
-                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/cesm-project-inc-cesm2.html' %]
-                        <!-- end CESM Project Include -->
-
-                        <!-- Models Related Include -->
-                        <!--#include virtual="/styles/modern/includes/col-lg-4/models-related-inc.html" -->
-                        [% INSERT '/home/www/html/styles/modern/includes/col-lg-4/models-related-inc-cesm2.html' %]
-                        <!-- end Models Related Include -->
-                    </aside>
-                </div>
-            </div>
+            <label for="f-email" class="sr-only">email</label>
+            <input name="email" type="text" id="f-email" class="form-control" placeholder="email">
         </div>
-    </section>
 
-    <footer>
-        <!-- footer -->
-        <!--#include virtual="/styles/modern/includes/footer/footer-inc.html" -->
-        [% INSERT '/home/www/html/styles/modern/includes/footer/footer-inc.html' %]
-        <!-- end footer -->
-    </footer>
-</div>
+        <label>Login Type</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="loginType" id="loginTypeSVN" value="SVN">
+            <label class="form-check-label" for="loginTypeSVN">SVN</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="loginType" id="loginTypeCIT" value="CIT">
+            <label class="form-check-label" for="loginTypeCIT">CIT</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="loginType" id="loginTypeOTHER" value="OTHER">
+            <label class="form-check-label" for="loginTypeOTHER">Other</label>
+        </div>
 
+        <input type="hidden" name="action" value="login">
+        <input type="submit" name="submit" class="btn btn-lg btn-block btn-primary mt-4 mb-5" value="Log In">
 
-[% INSERT '/home/www/html/styles/modern/js/js-include.html' %]
+        <a href="https://csegweb.cgd.ucar.edu/svnuser/cgi-bin/repo_access_form.cgi">Need a CESM SVN developers login?</a> 
+        <a href="http://www.cgd.ucar.edu/systems/documentation/faqs/computing/subversion_info2.html">Forgot your SVN login or password?</a>
+    </form>
 
-<script>
-    // jquery to update the page if user selects the other login type
-    $(".login-type-radio").on('click', function(){
-        // set the id
-        var id = $(this).attr('id');
+    <!-- javascript -->
+    [% INSERT '/home/www/html/styles/um/js/js-include.html' %]
 
-        // check the id
-        if ( id === "loginTypeOTHER" ) {
-            // issa other so show that form
-            $(".form-group-standard").fadeOut("fast", function() {
-                // fade in the anon form
-                $(".form-group-anon").fadeIn("fast");
-            });
-        }
-        // not the other so make sure the standard for is visible
-        else {
-            // check the visible status
-            if (!$(".form-group-standard").is(':visible')) {
-                // not visible so make it
-                $(".form-group-anon").fadeOut("fast", function() {
+    <script>
+        // jquery to update the page if user selects the other login type
+        $(".login-type-radio").on('click', function(){
+            // set the id
+            var id = $(this).attr('id');
+
+            // check the id
+            if ( id === "loginTypeOTHER" ) {
+                // issa other so show that form
+                $(".form-group-standard").fadeOut("fast", function() {
                     // fade in the anon form
-                    $(".form-group-standard").fadeIn("fast");
+                    $(".form-group-anon").fadeIn("fast");
                 });
             }
-        }
-    });
-</script>
+            // not the other so make sure the standard for is visible
+            else {
+                // check the visible status
+                if (!$(".form-group-standard").is(':visible')) {
+                    // not visible so make it
+                    $(".form-group-anon").fadeOut("fast", function() {
+                        // fade in the anon form
+                        $(".form-group-standard").fadeIn("fast");
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

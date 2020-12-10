@@ -110,42 +110,37 @@ else {
 
 # decide what to do based on the passed in action value
 
-sub doactions
-{
+sub doactions {
+
     my $action = $req->param('action') || '';
 
     $item{comments} = $req->param('comments') || '';
     $item{message} = $req->param('message') || '';
 
-    if( length($action) == 0 )
-    {
-	&uploadForm;
+
+    if( length($action) == 0 ) {
+        &uploadForm;
     }
 
-    if ($action eq 'uploadProc') 
-    {
-	my $validated = &validateRequest($req);
+    if ($action eq 'uploadProc') {
+        my $validated = &validateRequest($req);
 
-	if ( $validated == 1 && $anonloggedin == 0 )
-	{
-	    &uploadProcess;
-	    &successPage;
-	}
-	elsif ( $validated == 1 && $anonloggedin == 1 )
-	{
-	    &anonUser;
-	    &uploadProcess;
-	    &emailAdmin;
-	    &successPage;
-	}
-	else 
-	{
-	    &uploadForm;
-	}
+        if ( $validated == 1 && $anonloggedin == 0 ) {
+            &uploadProcess;
+            &successPage;
+        }
+        elsif ( $validated == 1 && $anonloggedin == 1 ) {
+            &anonUser;
+            &uploadProcess;
+            &emailAdmin;
+            &successPage;
+        }
+        else {
+            &uploadForm;
+        }
     }
-
+    
     &uploadForm;
-
 }
 
 #------------------
