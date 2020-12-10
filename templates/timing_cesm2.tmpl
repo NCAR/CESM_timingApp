@@ -139,7 +139,12 @@
 									<td><a href="[% timing.timing_file %]"> [% timing.compset %] </a> </td>
 									<td>[% timing.resolution %]</td>
 									<td>[% timing.compiler %]</td>
-									<td>[% timing.driver %]</td>
+									<td>[% IF timing.driver == '' || timing.driver == 'NULL' %]
+											CPL7
+										[% ELSE %]
+											[% timing.driver %]
+										[% END %]
+									</td>
 									<td>[% timing.mpilib %]</td>
 									<td>[% timing.total_pes %]</td>
 									<td>[% timing.cost %]</td>
