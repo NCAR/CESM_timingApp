@@ -37,7 +37,7 @@
     <form class="form-signin" method="POST">
         <img class="mb-5 form-signin-logo" src="https://www.cgd.ucar.edu/Images/logos/logo-ncar-600.png" alt="NCAR Logo">
 
-        <label class="mt-3 h5 text-cesm">Login Type</label>
+        <label class="mt-3 h5 text-cesm font-weight-bold">Login Type</label>
         <br>
         <div class="mb-2">
             <div class="form-check form-check-inline">
@@ -73,10 +73,10 @@
             <input name="firstName" type="text" id="f-firstName" class="form-control" placeholder="First Name">
 
             <label for="f-lastName" class="sr-only">last name</label>
-            <input name="lastName" type="text" id="f-lastName" class="form-control" placeholder="Last Name">
+            <input name="lastName" type="text" id="f-lastName" class="form-control" placeholder="Last Name" style="border-radius: 0px;">
 
             <label for="f-email" class="sr-only">email</label>
-            <input name="email" type="text" id="f-email" class="form-control" placeholder="email">
+            <input name="email" type="text" id="f-email" class="form-control" placeholder="email" style="border-radius: 0px;">
         </div>
 
         <input type="hidden" name="action" value="login">
