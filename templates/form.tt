@@ -67,9 +67,6 @@
                                   <h5><label for="f-file">Upload File</label></h5>
 
                                   <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="fa fa-file" aria-hidden="true"></i>
-                                    </div>
                                     <input class="form-control f-input f-file" name="file" size="" id="f-file" type="file" required>
                                 </div>
                             </div>
