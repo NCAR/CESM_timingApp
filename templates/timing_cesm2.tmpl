@@ -180,6 +180,7 @@
 									<th>Machine</th>
 									<th>Compset</th>
 									<th>Resolution</th>
+									<th>Driver</th>
 									<th>Compiler</th>
 									<th>mpilib</th>
 									<th>Total PEs</th>
@@ -226,18 +227,18 @@
 				term = term.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
 
 				var table = $('#timingTable').DataTable( {
-				"search": {"search": term},
-				"responsive": true,
-				"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-				"order": [ [ 0, 'asc'], [ 1, 'asc'], [2, 'asc'] ]
+					"search": {"search": term},
+					"responsive": true,
+					"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+					"order": [ [ 0, 'asc'], [ 1, 'asc'], [2, 'asc'] ]
 				});
 			}
 			// no search string
 			else {
 				var table = $('#timingTable').DataTable( {
-				"responsive": true,
-				"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-				"order": [ [ 0, 'asc'], [ 1, 'asc'], [ 2, 'asc'] ]
+					"responsive": true,
+					"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+					"order": [ [ 0, 'asc'], [ 1, 'asc'], [ 2, 'asc'] ]
 				});
 			}
 
