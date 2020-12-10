@@ -8,7 +8,6 @@
     <meta name="description" content="" />
 
     <!-- css -->
-    <!--#include virtual="/styles/modern/css/css-include.html" -->
     [% INSERT '/home/www/html/styles/um/css/css-include.html' %]
 
 
@@ -41,7 +40,7 @@
         <br>
         <div class="mb-2">
             <div class="form-check form-check-inline">
-                <input class="form-check-input login-type-radio" type="radio" name="loginType" id="loginTypeSVN" value="SVN">
+                <input class="form-check-input login-type-radio" type="radio" name="loginType" id="loginTypeSVN" value="SVN" required>
                 <label class="form-check-label" for="loginTypeSVN">SVN</label>
             </div>
             <div class="form-check form-check-inline">
