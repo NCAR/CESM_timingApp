@@ -139,8 +139,8 @@ sub doactions {
             &uploadForm;
         }
     }
-    
-    &uploadForm;
+
+    #&uploadForm;
 }
 
 #------------------
